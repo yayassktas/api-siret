@@ -361,9 +361,14 @@ async def get_stats(user: dict = Depends(verify_api_key)):
     }
 
 if __name__ == "__main__":
+    # Récupérer le port depuis la variable d'environnement (Render le fournit)
+    port = int(os.getenv("PORT", 8000))
+    # En production, désactiver le reload
+    reload = os.getenv("RELOAD", "false").lower() == "true"
+    
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=8000,
-        reload=True
+        port=port,
+        reload=reload
     )
