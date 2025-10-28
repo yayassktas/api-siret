@@ -104,8 +104,10 @@ API_KEYS = {
     "premium_key_456": {"name": "Premium User", "tier": "premium", "daily_limit": 10000}
 }
 
-def verify_api_key(x_api_key: str = Header(...)):
-    """Vérifie la clé API"""
+def verify_api_key(x_api_key: str = Header(None)):
+    """Vérifie la clé API - Retourne 403 si manquante ou invalide"""
+    if x_api_key is None:
+        raise HTTPException(status_code=403, detail="Clé API manquante")
     if x_api_key not in API_KEYS:
         raise HTTPException(status_code=403, detail="Clé API invalide")
     return API_KEYS[x_api_key]
